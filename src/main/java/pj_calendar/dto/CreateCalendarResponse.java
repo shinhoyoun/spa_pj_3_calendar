@@ -18,8 +18,8 @@ public class CreateCalendarResponse {
     private final LocalDateTime modifiedAt;
 
     public CreateCalendarResponse(Long id, String title,
-                                  String contents, String name,
-                                  String password,
+                                  String name, String password,
+                                  String contents,
                                   LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.title = title;

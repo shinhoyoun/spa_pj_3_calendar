@@ -33,10 +33,10 @@ public class CalendarService {
                 request.getTitle(),
                 request.getName(),
                 request.getPassword(),
-                request.getContents(),
+                request.getContents()
 //                request.getDate(),
-                request.getCreatedAt(),
-                request.getModifiedAt()
+//                request.getCreatedAt(),
+//                request.getModifiedAt()
         );
 
         CalendarEntity savedCalendar = calendarRepository.save(calendar);
@@ -96,18 +96,25 @@ public class CalendarService {
 
     @Transactional
     public UpdateCalendarResponse update(Long calendarId, UpdateCalendarRequest request) {
-        CalendarEntity calendarEntity = calendarRepository.findById(calendarId).orElseThrow(
+        CalendarEntity calendarEntity = calendarRepository.findById(calendarId).orElseThrow(    // repository에 담겨있는 데이터를 가지고와서 orelseThrow로 i
                 () -> new IllegalStateException("X - calendarId - update")
         );
-
+        
+        // 비번 체크
+        if (!calendarEntity.getPassword().equals((request.getPassword()))) {
+            throw new IllegalArgumentException("비밀번호 틀림");
+        }
+        
+        // 수정 진행
         calendarEntity.update(
-                calendarEntity.getTitle(),
-                calendarEntity.getName(),
-                calendarEntity.getPassword(),
-                calendarEntity.getContents(),
+                // 가져온 데이터를 내가 넣은 값으로 수정되게
+                request.getTitle(),
+                request.getName(),
+                request.getPassword(),
+                request.getContents()
 //                calendarEntity.getDate(),
-                calendarEntity.getCreatedAt(),
-                calendarEntity.getModifiedAt()
+//                calendarEntity.getCreatedAt(),
+//                calendarEntity.getModifiedAt()
         );
 
         return new UpdateCalendarResponse(
@@ -123,12 +130,21 @@ public class CalendarService {
     }
 
     @Transactional
-    public void delete(Long calendarId) {
-        boolean existence = calendarRepository.existsById(calendarId);
+    public void delete(Long calendarId, String password) {
+//        boolean existence = calendarRepository.existsById(calendarId);
+
+        CalendarEntity calendarEntity = calendarRepository.findById(calendarId).orElseThrow(
+                () -> new IllegalStateException("X - calendar - delete")
+        );
 
         // 없는 경우
-        if(!existence) {
-            throw new IllegalArgumentException("X - calendarId - delete");
+//        if(!existence) {
+//            throw new IllegalArgumentException("X - calendarId - delete t");
+//        }
+
+        // 비번 체크
+        if (!calendarEntity.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비번이 틀립니다.");
         }
         // 있는 경우
         calendarRepository.deleteById(calendarId);

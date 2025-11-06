@@ -49,10 +49,12 @@ public class CalendarController {
     }
 
     // 삭제 delete
-    @DeleteMapping("/calendar/{calendarId}")
-    public ResponseEntity<Void> delete(@PathVariable Long calendarId) {
-        calendarService.delete(calendarId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    @DeleteMapping("/calendars/{calendarId}")
+    public ResponseEntity<String> delete(
+            @PathVariable Long calendarId, @RequestBody DeleteCalendarRequest passWord
+    ) {
+        calendarService.delete(calendarId, passWord.getPassword());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("삭제완료");
     }
 
 

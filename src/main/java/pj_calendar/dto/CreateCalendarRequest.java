@@ -10,6 +10,6 @@ public class CreateCalendarRequest {
     private String name;
     private String password;
     private String contents;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+//    private LocalDateTime createdAt;
+//    private LocalDateTime modifiedAt;
 }
